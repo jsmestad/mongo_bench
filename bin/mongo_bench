@@ -1,20 +1,27 @@
+#!/usr/bin/env ruby
 require 'rubygems'
-require 'mongo'
-require 'bson_ext'
-
 require 'trollop'
 
 opts = Trollop::options do
-  opt :hostname, "mongod hostname", :default => "localhost"
-  opt :port,     "mongod port",     :default => 27017
-  opt :database, "mongo stats db",  :default => "mongo_stats"
-  opt :username, "db username",     :default => "admin"
-  opt :password, "db password",     :default => "admin"
+  banner <<-EOS
+This script was built to benchmark and simulate load to MongoDB processes.
+
+Usage:
+       mongo_bench [options]
+where [options] are:
+EOS
+  opt :threads,   "number of concurrent threads", :default => 1
+  opt :server,    "mongod hostname",              :default => "localhost"
+  opt :port,      "mongod port",                  :default => 27017
+  opt :username,  "db username",                  :default => nil
+  opt :password,  "db password",                  :default => nil
 end
 
-require File.join(File.dirname(__FILE__), '..', 'lib/statdumper')
+# Trollop::die :file, "must exist" unless File.exist?(opts[:file]) if opts[:file]
 
-std = StatDumper.new(ARGV.first, opts)
+require File.join(File.dirname(__FILE__), '..', 'lib/mongo_bench')
+
+std = MongoBench.new(opts)
 std.run!
 
 # vim: ft=ruby
