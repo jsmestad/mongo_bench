@@ -1,6 +1,6 @@
 = mongo_bench
 
-Description goes here.
+A way to benchmark your MongoDB processes similar to ab.
 
 == Note on Patches/Pull Requests
  

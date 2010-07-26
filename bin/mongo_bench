@@ -1,0 +1,21 @@
+require 'rubygems'
+require 'mongo'
+require 'bson_ext'
+
+require 'trollop'
+
+opts = Trollop::options do
+  opt :hostname, "mongod hostname", :default => "localhost"
+  opt :port,     "mongod port",     :default => 27017
+  opt :database, "mongo stats db",  :default => "mongo_stats"
+  opt :username, "db username",     :default => "admin"
+  opt :password, "db password",     :default => "admin"
+end
+
+require File.join(File.dirname(__FILE__), '..', 'lib/statdumper')
+
+std = StatDumper.new(ARGV.first, opts)
+std.run!
+
+# vim: ft=ruby
+
