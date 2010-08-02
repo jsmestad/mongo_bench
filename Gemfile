@@ -11,5 +11,5 @@ group :development do
 end
 
 group :test do
-  gem 'rspec', '>= 2.0.0.beta11'
+  gem 'rspec', '>= 2.0.0.beta.11'
 end

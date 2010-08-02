@@ -15,9 +15,11 @@ EOS
   opt :port,      "mongod port",                  :default => 27017
   opt :username,  "db username",                  :default => nil
   opt :password,  "db password",                  :default => nil
+  opt :db,        "db name",                      :default => 'local'
+  opt :file,      "test case in javascript",      :default => "./test.js"
 end
 
-# Trollop::die :file, "must exist" unless File.exist?(opts[:file]) if opts[:file]
+Trollop::die :file, "must exist" unless File.exist?(opts[:file]) if opts[:file]
 
 require File.join(File.dirname(__FILE__), '..', 'lib/mongo_bench')
 
