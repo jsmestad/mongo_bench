@@ -13,8 +13,8 @@ class MongoBench
     @server, @port = opts[:server], opts[:port]
     @username, @password = opts[:username], opts[:password]
     @db = opts[:db]
-    @file = opts[:file]
-    @iter = 10000
+    @dir = opts[:dir]
+    @iter = opts[:iterations]
 
     if @username && @password
       puts "adding auth for #{username}/#{password} to admin"
@@ -24,23 +24,22 @@ class MongoBench
   end
 
   def run!
-    puts "running"
-
-    js = IO.read(@file)
-    @threads.times do 
-      db=connection.db(@db)
-      Thread.new do
-        @iter.times do 
-          db.eval(js)
-        end
-      end
+    db=connection.db(@db)
+    tests = []
+    Dir[File.join(File.dirname(__FILE__),'..','tests/*')].each do |f|
+      require f
+      tests << File.basename(f,'.rb').sub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
+    end
+    tests.each do |t|
+      test = Kernel.const_get(t).new({:iter => @iter, :threads => @threads, :db => db})
+      test.run!
     end
   end
 
   protected
 
     def connection
-      @connection ||= Mongo::Connection.new(@server, @port)
+      @connection ||= Mongo::Connection.new(@server, @port,:pool_size => @threads)
     end
 
 end
