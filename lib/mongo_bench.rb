@@ -31,8 +31,8 @@ class MongoBench
       require f
       tests << File.basename(f,'.rb').sub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
     end
-    tests.each do |t|
       Benchmark.bm(14) do |x|
+        tests.each do |t|
         test = Kernel.const_get(t).new({:iter => @iter, :threads => @threads, :db => db})
         x.report("#{t} run: ") { test.run!}
       end
