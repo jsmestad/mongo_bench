@@ -6,13 +6,15 @@ class MongoTest
     @db      = opts[:db]
   end
   def run!
+    result = nil
     @threads.times do
       Thread.new do
         @iter.times do
-          test
+          result = test
         end
       end
     end
+    return result
   end
 
   def test

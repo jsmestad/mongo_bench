@@ -1,6 +1,6 @@
 class BasicTest < MongoTest
   def test
-    puts @db.inspect
+    return true
   end
 end
 
