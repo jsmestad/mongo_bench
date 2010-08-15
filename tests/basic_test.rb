@@ -1,6 +1,6 @@
 class BasicTest < MongoTest
   def test
-    return true
+    # noop
   end
 end
 
